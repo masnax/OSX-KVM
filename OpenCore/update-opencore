@@ -1,0 +1,13 @@
+#!/bin/bash 
+sudo pacman -U https://archive.archlinux.org/packages/l/linux/linux-5.12.14.arch1-1-x86_64.pkg.tar.zst
+export SUPERMIN_KERNEL=/boot/vmlinuz-linux
+export SUPERMIN_MODULES=/lib/modules/5.12.14-arch1-1
+export SUPERMIN_KERNEL_VERSION=5.12.14-arch1-1
+rm -rf /var/tmp/.guestfs-*
+sudo -E libguestfs-test-tool
+rm -f OpenCore.qcow2; sudo -E ./opencore-image-ng.sh --cfg config.plist --img OpenCore.qcow2
+echo "[DONE]"
+echo "[DONE]"
+echo "[DONE]"
+
+sudo pacman -Syyu

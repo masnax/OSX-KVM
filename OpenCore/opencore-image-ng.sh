@@ -68,7 +68,7 @@ done
 
 function fish() {
 	echo "#" "$@"
-	guestfish --remote -- "$@"		|| exit 1
+	guestfish -v --remote -- "$@"		|| exit 1
 }
 
 function fish_init() {
