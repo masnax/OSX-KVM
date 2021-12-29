@@ -2,9 +2,9 @@
   <name>macOS</name>
   <uuid>2aca0dd6-cec9-4717-9ab2-0b7b13d111c3</uuid>
   <title>macOS</title>
-  <memory unit='KiB'>4194304</memory>
-  <currentMemory unit='KiB'>4194304</currentMemory>
-  <vcpu placement='static'>4</vcpu>
+  <memory unit='KiB'>30714752</memory>
+  <currentMemory unit='KiB'>30714752</currentMemory>
+  <vcpu placement='static'>12</vcpu>
   <os>
     <type arch='x86_64' machine='pc-q35-6.0'>hvm</type>
     <loader readonly='yes' type='pflash'>/home/max/OSX-KVM/OVMF_CODE.fd</loader>
@@ -14,9 +14,7 @@
     <acpi/>
     <apic/>
   </features>
-  <cpu mode='custom' match='exact' check='none'>
-    <model fallback='forbid'>qemu64</model>
-  </cpu>
+  <cpu mode='host-passthrough' check='none' migratable='on'/>
   <clock offset='utc'>
     <timer name='rtc' tickpolicy='catchup'/>
     <timer name='pit' tickpolicy='delay'/>
@@ -36,10 +34,17 @@
     </disk>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2' cache='writeback' io='threads'/>
-      <source file='/home/max/OSX-KVM/mac_hdd_ng.img'/>
+      <source file='/home/max/KVM/macOS/hackintosh_hd.img'/>
       <target dev='sdb' bus='sata'/>
       <boot order='1'/>
       <address type='drive' controller='0' bus='0' target='0' unit='1'/>
+    </disk>
+    <disk type='block' device='disk'>
+      <driver name='qemu' type='raw'/>
+      <source dev='/dev/sdd'/>
+      <target dev='sdd' bus='sata'/>
+      <boot order='3'/>
+      <address type='drive' controller='0' bus='0' target='0' unit='3'/>
     </disk>
     <controller type='sata' index='0'>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x1f' function='0x2'/>
