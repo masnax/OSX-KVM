@@ -7,43 +7,15 @@ medium_delay=5
 short_delay=1
 echo "Beginning of startup!"
 
-function stop_display_manager_if_running {
-    # Stop dm using systemd
-    if command -v systemctl; then
-        if systemctl is-active --quiet "$1.service" ; then
-            echo $1 >> /tmp/vfio-store-display-manager
-            systemctl stop "$1.service"
-        fi
-
-        while systemctl is-active --quiet "$1.service" ; do
-            sleep "${short_delay}"
-        done
-
-        return
-    fi
-
-    # Stop dm using runit
-    if command -v sv; then
-        if sv status $1 ; then
-            echo $1 >> /tmp/vfio-store-display-manager
-            sv stop $1
-        fi
-    fi
-}
-
-
-# Stop currently running display manager
-if test -e "/tmp/vfio-store-display-manager" ; then
-    rm -f /tmp/vfio-store-display-manager
-fi
-
-stop_display_manager_if_running sddm
-stop_display_manager_if_running gdm
-stop_display_manager_if_running lightdm
-stop_display_manager_if_running lxdm
-stop_display_manager_if_running xdm
-stop_display_manager_if_running mdm
-stop_display_manager_if_running display-manager
+#if test -e "/tmp/macos" ; then
+#	rm -f /tmp/macos
+#fi
+#
+#ps -ef | grep Xorg | grep -o "vt[0-9]" | grep -o "[0-9]" >> /tmp/macos
+#
+#DISPLAY=:0 openbox --exit
+#sudo killall Xorg
+#sudo killall openbox
 
 # Unbind VTconsoles if currently bound (adapted from https://www.kernel.org/doc/Documentation/fb/fbcon.txt)
 if test -e "/tmp/vfio-bound-consoles" ; then
@@ -64,8 +36,8 @@ done
 # Unbind EFI-Framebuffer
 if test -e "/tmp/vfio-is-nvidia" ; then
     rm -f /tmp/vfio-is-nvidia
+    echo efi-framebuffer.0 > /sys/bus/platform/drivers/efi-framebuffer/unbind
 fi
 
-    echo efi-framebuffer.0 > /sys/bus/platform/drivers/efi-framebuffer/unbind
 
 echo "End of startup!"

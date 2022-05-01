@@ -3,18 +3,6 @@ set -x
 
 echo "Beginning of teardown!"
 
-# Restart Display Manager
-input="/tmp/vfio-store-display-manager"
-while read displayManager; do
-  if command -v systemctl; then
-    systemctl start "$displayManager.service"
-  else
-    if command -v sv; then
-      sv start $displayManager
-    fi
-  fi
-done < "$input"
-
 # Rebind VT consoles (adapted from https://www.kernel.org/doc/Documentation/fb/fbcon.txt)
 input="/tmp/vfio-bound-consoles"
 while read consoleNumber; do
